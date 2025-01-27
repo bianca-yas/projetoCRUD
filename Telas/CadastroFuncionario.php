@@ -1,7 +1,11 @@
 <?php
     namespace PHP\Modelo\Tela;
     require_once('..\Funcionario.php');
+    require_once('..\DAO\Conexao.php');
+    require_once('..\DAO\Inserir.php');
     use PHP\Modelo\Funcionario;
+    use PHP\Modelo\DAO\Conexao;
+    use PHP\Modelo\DAO\Inserir;
 ?>
 
 <!Doctype HTML>
@@ -41,25 +45,26 @@
 
         <button type="submit">Cadastrar
             <?php
-            if(isset($_POST['tCpf']) && isset($_POST['tNome'])){
-                $cpf = $_POST['tCpf'];
-                $nome = $_POST['tNome'];
-                $telefone = $_POST['tTelefone'];
-                $endereco = $_POST['tEndereco'];
-                $salario = $_POST['tSalario'];
-                
-                $func1 = new Funcionario($cpf,$nome,$telefone,$endereco,$salario);
+                $conexao = new Conexao();
+
+                if(isset($_POST['tCpf']) && isset($_POST['tNome'])){
+                    $cpf = $_POST['tCpf'];
+                    $nome = $_POST['tNome'];
+                    $telefone = $_POST['tTelefone'];
+                    $endereco = $_POST['tEndereco'];
+                    $salario = $_POST['tSalario'];
+                    
+                    $inserir = new Inserir();
+                        echo $inserir->cadastrarFuncionario($conexao,$cpf,$nome,
+                                                        $telefone, $endereco,$salario);
             }
             ?>
         </button>
         </form>
-
-        <?php
-            echo $func1->imprimir();
-        ?>
 
         
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
+</html>

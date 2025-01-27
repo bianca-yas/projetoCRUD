@@ -1,7 +1,11 @@
 <?php
     namespace PHP\Modelo\Tela;
     require_once('..\Cliente.php');
+    require_once('..\DAO\Conexao.php');
+    require_once('..\DAO\Inserir.php');
     use PHP\Modelo\Cliente;
+    use PHP\Modelo\DAO\Conexao;
+    use PHP\Modelo\DAO\Inserir;
 ?>
 
 <!Doctype HTML>
@@ -10,6 +14,7 @@
         <meta charset="UTF-8">
         <title>Cadastro Cliente</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     </head>
     <body>
         <form method="POST">
@@ -41,25 +46,26 @@
 
         <button type="submit">Cadastrar
             <?php
-            if(isset($_POST['tCpf']) && isset($_POST['tNome'])){
-                $cpf = $_POST['tCpf'];
-                $nome = $_POST['tNome'];
-                $telefone = $_POST['tTelefone'];
-                $endereco = $_POST['tEndereco'];
-                $total = $_POST['tTotal'];
-                
-                $cliente1 = new Cliente($cpf,$nome,$telefone,$endereco,$total);
-            }
+                $conexao = new Conexao(); //conectar ao banco
+
+                if(isset($_POST['tCpf']) && isset($_POST['tNome'])){
+                    $cpf = $_POST['tCpf'];
+                    $nome = $_POST['tNome'];
+                    $telefone = $_POST['tTelefone'];
+                    $endereco = $_POST['tEndereco'];
+                    $total = $_POST['tTotal'];
+                    
+                    $inserir = new Inserir();
+                    echo $inserir->cadastrarCliente($conexao,$cpf,$nome,
+                                                    $telefone, $endereco,$total);
+                }
             ?>
         </button>
         </form>
-
-        <?php
-            echo $cliente1->imprimir();
-        ?>
 
         
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
+</html>
